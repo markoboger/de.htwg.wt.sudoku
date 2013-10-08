@@ -1,0 +1,81 @@
+@(message: String, controller:de.htwg.sudoku.controller.ISudokuController) 
+
+@main("Welcome to Play Framework") {
+
+    <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
+    <link rel="stylesheet" href='@routes.Assets.at("stylesheets/Sudoku.css")' />
+    
+    <div class="well">
+        <h1>@message</h1>
+            <div  class="outmost">
+			<div class="grid">
+				@for(row <- 0 to 8){
+				<div class="gridrow">
+					@for(column <- 0 to 8){
+						<span id="@{
+						var blockname = ""
+						if (row % 3 == 0) {blockname = "N"}
+						if (row % 3 == 1) {blockname = ""}
+						if (row % 3 == 2) {blockname = "S"}
+						if (column % 3 == 0) {blockname = blockname + "W"}
+						if (column % 3 == 1) {blockname = blockname + ""}
+						if (column % 3 == 2) {blockname = blockname + "E"}
+						if (blockname == "") {blockname = "C"}
+						blockname + "block"
+						}">
+						<span class="cellouter">
+							<span 
+								@{
+								if (controller.isGiven(row, column)) {
+									"id=given"
+								} else {
+									if (controller.isHighlighted(row, column)) {
+										"id=highlighted"
+									} else {
+										"id=normal"
+									}
+								}
+								}
+								class="cellborder">
+					
+								<div class="cell"><font size="8"> @if(controller.getValue(row,column) != 0) {@controller.getValue(row,column)}</font>
+									@if(controller.getValue(row,column) == 0 && controller.isShowCandidates(row, column)) {
+									
+									<span class="candidate" align="center">
+										@for( i <- 1 to 9) {
+											@if(i % 3 == 1) {
+												<span>
+											}
+													<div class="candidatecell">
+														<p class="candidatetext"> 
+															@if(controller.isCandidate(row, column,i)) {@i}  
+									 					</p>
+									 				</div>
+											@if(i % 3 == 0) {
+												</span>
+											}
+										}
+									</span>
+								}
+								</div>
+							</span>
+						</span>
+					</span>
+					}
+					
+				</div>
+				}
+			</div>
+			<div class="statusline">
+			 	@controller.getStatus() 
+				<form name="commandline" action="SudokuCommand" method="get"><input
+					type="text" name="command" maxlength="10" size="10" /><input
+					type="submit" name="submit" value="OK" />
+				</form>
+			</div>
+		</div>
+    </div>
+
+    <button id="getMessageButton">Get JSON Message</button>
+
+}
