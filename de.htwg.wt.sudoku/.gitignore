@@ -9,9 +9,11 @@ dist
 /*.iml
 /out
 /.idea_modules
-/.classpath
-/.project
 /RUNNING_PID
-/.settings
 /project/*-shim.sbt
 /activator-sbt-atmos-akka-shim.sbt
+*.log
+*.log.*
+.target
+.cache
+bin
