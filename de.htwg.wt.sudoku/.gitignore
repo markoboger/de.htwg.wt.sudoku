@@ -11,7 +11,7 @@ dist
 /.idea_modules
 /RUNNING_PID
 /project/*-shim.sbt
-/activator-sbt-atmos-akka-shim.sbt
+*activator-sbt-atmos-akka-shim.sbt
 *.log
 *.log.*
 .target
