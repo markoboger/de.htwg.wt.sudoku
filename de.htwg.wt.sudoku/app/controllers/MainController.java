@@ -17,6 +17,8 @@ public class MainController extends Controller {
     
     public static Result commandline(){
     	CommandLine commandline = command.bindFromRequest().get();
+    	if (commandline.command == null) commandline.command = "+"; // remove this line as soon as the form submission works
+    	Sudoku.getInstance().getTUI().processInputLine(commandline.command);
     	return ok(views.html.index.render("Got your command "+ commandline.command, controller));
     }
     
