@@ -4,6 +4,15 @@
     <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
     <link rel="stylesheet" href='@routes.Assets.at("stylesheets/Sudoku.css")' />
     
+    <script language="JavaScript"> 
+		function setValue(row,column,value) {
+			window.location = "/command/"+row+column+value;
+		}
+		function setShowCandidates(row,column) {
+			window.location = "/command/"+row+column;
+		}
+	</script>
+    
     <div class="well">
       <div class="align">
         <h1>@message</h1>
@@ -26,7 +35,7 @@
 						if (blockname == "") {blockname = "C"}
 						blockname + "block"
 						}">
-						<span class="cellouter">
+						<span class="cellouter" @if(!controller.isShowCandidates(row,column)){onclick="setShowCandidates(@row, @column)"}>
 							<span 
 								@{
 								if (controller.isGiven(row, column)) {
@@ -49,7 +58,7 @@
 											@if(i % controller.getBlockSize == 1) {
 												<span>
 											}
-													<div class="candidatecell">
+													<div class="candidatecell" ondblclick="setValue(@row,@column,@i)">
 														<p class="candidatetext"> 
 															@if(controller.isCandidate(row, column,i)) {@i}  
 									 					</p>
@@ -72,10 +81,6 @@
 		</div>
 		<div class="statusline">
 			 	@controller.getStatus() 
-				<form name="commandline" action="SudokuCommand" method="get"><input
-					type="text" name="command" maxlength="10" size="10" /><input
-					type="submit" name="submit" value="OK" />
-				</form>
 		</div>
 	  </div>
     </div>
