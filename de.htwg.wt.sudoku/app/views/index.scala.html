@@ -1,88 +1,95 @@
-@(message: String, controller:de.htwg.sudoku.controller.ISudokuController) 
+@(message: String, controller:de.htwg.sudoku.controller.ISudokuController)
 
 @main("Welcome to Play Framework") {
-    <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
-    <link rel="stylesheet" href='@routes.Assets.at("stylesheets/Sudoku.css")' />
-    
-    <script language="JavaScript"> 
-		function setValue(row,column,value) {
-			window.location = "/command/"+row+column+value;
-		}
-		function setShowCandidates(row,column) {
-			window.location = "/command/"+row+column;
-		}
-	</script>
-    
-    <div class="well">
-      <div class="align">
+<script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
+<link rel="stylesheet" href='@routes.Assets.at("stylesheets/Sudoku.css")'/>
+
+<script language="JavaScript">
+    function setValue(row,column,value) {
+    window.location = "/command/"+row+column+value;
+    }
+    function setShowCandidates(row,column) {
+    window.location = "/command/"+row+column;
+    }
+</script>
+
+<div class="well">
+    <div class="align">
         <h1>@message</h1>
-            <div  @if(controller.getCellsPerRow == 9) {class="outmost-nine"}
-                  @if(controller.getCellsPerRow == 4) {class="outmost-four"} 
-                  @if(controller.getCellsPerRow == 1) {class="outmost-one"}>
-			<div class="grid">
-				@for(row <- 0 until controller.getCellsPerRow){
-				<div class="gridrow">
-					@for(column <- 0 until controller.getCellsPerRow){
+
+        <div
+        @if(controller.getCellsPerRow == 9) {class="outmost-nine"}
+        @if(controller.getCellsPerRow == 4) {class="outmost-four"}
+        @if(controller.getCellsPerRow == 1) {class="outmost-one"}>
+        <div class="grid">
+            @for(row <- 0 until controller.getCellsPerRow){
+            <div class="gridrow">
+                @for(column <- 0 until controller.getCellsPerRow){
 						<span id="@{
 						var blockname = ""
-						val blocksize = controller.getBlockSize
-						if (row % blocksize == 0) {blockname = "N"}
-						if (row % blocksize == 1) {blockname = ""}
-						if (row % blocksize == 2) {blockname = "S"}
-						if (column % blocksize == 0) {blockname = blockname + "W"}
-						if (column % blocksize == 1) {blockname = blockname + ""}
-						if (column % blocksize == 2) {blockname = blockname + "E"}
-						if (blockname == "") {blockname = "C"}
-						blockname + "block"
-						}">
-						<span class="cellouter" @if(!controller.isShowCandidates(row,column)){onclick="setShowCandidates(@row, @column)"}>
-							<span 
-								@{
-								if (controller.isGiven(row, column)) {
-									"id=given"
-								} else {
-									if (controller.isHighlighted(row, column)) {
-										"id=highlighted"
-									} else {
-										"id=normal"
-									}
-								}
-								}
-								class="cellborder">
-					
-								<div class="cell"><font size="8"> @if(controller.getValue(row,column) != 0) {@controller.getValue(row,column)}</font>
-									@if(controller.getValue(row,column) == 0 && controller.isShowCandidates(row, column)) {
-									
+                val blocksize = controller.getBlockSize
+                if (row % blocksize == 0) {blockname = "N"}
+                if (row % blocksize == 1) {blockname = ""}
+                if (row % blocksize == 2) {blockname = "S"}
+                if (column % blocksize == 0) {blockname = blockname + "W"}
+                if (column % blocksize == 1) {blockname = blockname + ""}
+                if (column % blocksize == 2) {blockname = blockname + "E"}
+                if (blockname == "") {blockname = "C"}
+                blockname + "block"
+                }">
+                <span class="cellouter" @if(!controller.isShowCandidates(row,column)){onclick="setShowCandidates(@row,
+                @column)"}>
+                <span
+                @{
+                if (controller.isGiven(row, column)) {
+                "id=given"
+                } else {
+                if (controller.isHighlighted(row, column)) {
+                "id=highlighted"
+                } else {
+                "id=normal"
+                }
+                }
+                }
+                class="cellborder">
+
+                <div class="cell"><font size="8"> @if(controller.getValue(row,column) != 0) {@controller.getValue(row,column)}</font>
+                    @if(controller.getValue(row,column) == 0) {
+                    @if(controller.isShowCandidates(row, column)) {
+
 									<span class="candidate" align="center">
 										@for( i <- 1 to controller.getCellsPerRow) {
 											@if(i % controller.getBlockSize == 1) {
 												<span>
 											}
 													<div class="candidatecell" ondblclick="setValue(@row,@column,@i)">
-														<p class="candidatetext"> 
-															@if(controller.isCandidate(row, column,i)) {@i}  
-									 					</p>
-									 				</div>
+                                                        <p class="candidatetext">
+                                                            @if(controller.isCandidate(row, column,i)) {@i}
+                                                        </p>
+                                                    </div>
 											@if(i % controller.getBlockSize == 0) {
 												</span>
 											}
 										}
 									</span>
-								}
-								</div>
-							</span>
-						</span>
-					</span>
-					}
-					
-				</div>
-				}
-			</div>
-		</div>
-		<div class="statusline">
-			 	@controller.getStatus() 
-		</div>
-	  </div>
+                    } else {
+                    &nbsp;
+                    }
+                    }
+                </div>
+                </span>
+                </span>
+                </span>
+                }
+
+            </div>
+            }
+        </div>
     </div>
+    <div class="statusline">
+        @controller.getStatus()
+    </div>
+</div>
+</div>
 
 }
