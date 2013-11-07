@@ -1,4 +1,4 @@
-@(message: String, controller:de.htwg.sudoku.controller.ISudokuController) 
+@(message: String, controller:de.htwg.sudoku.controller.ISudokuController)
 
 @main("Welcome to Play Framework") {
     <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
@@ -14,150 +14,153 @@
 		}
 	</script>
 	<p>&nbsp;</p><p>&nbsp;</p>
-<nav class="navbar navbar-default" role="navigation">
-  <!-- Brand and toggle get grouped for better mobile display -->
-  <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-      <span class="sr-only">Toggle navigation</span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-    </button>
-  </div>
-
-  <!-- Collect the nav links, forms, and other content for toggling -->
-  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <ul class="nav navbar-nav">
-      <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">New</a></li>
-           <li class="divider"></li>
-          <li><a href="#">Save</a></li>
-          <li><a href="#">Load</a></li>
-          <li class="divider"></li>
-          <li><a href="#">Quit</a></li>
-        </ul>
-      </li>
-
-      <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Edit <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Undo</a></li>
-          <li><a href="#">Redo</a></li>
-           <li class="divider"></li>
-          <li><a href="#">Copy</a></li>
-          <li><a href="#">Paste</a></li>
-        </ul>
-      </li>
-
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Solve <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">Solve</a></li>
-        </ul>
-      </li>
-      
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Highlight <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          @for(highlight <- 0 until controller.getCellsPerRow){<li><a href="#">@highlight</a></li>}
-        </ul>
-      </li>
-      
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Options <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-          <li><a href="#">toggle show Candidates</a></li>
-          <li><a href="#">Resize to 9*9</a></li>
-          <li><a href="#">Resize to 4*4</a></li>
-          <li><a href="#">Resize to 1*1</a></li>
-        </ul>
-      </li>
-    </ul>
-  </div><!-- /.navbar-collapse -->
-</nav>
+	<nav class="navbar navbar-default" role="navigation">
+	  <!-- Brand and toggle get grouped for better mobile display -->
+	  <div class="navbar-header">
+	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	      <span class="sr-only">Toggle navigation</span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	  </div>
+	
+	  <!-- Collect the nav links, forms, and other content for toggling -->
+	  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	    <ul class="nav navbar-nav">
+	      <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
+	        <ul class="dropdown-menu">
+	          <li><a href="#">New</a></li>
+	           <li class="divider"></li>
+	          <li><a href="#">Save</a></li>
+	          <li><a href="#">Load</a></li>
+	          <li class="divider"></li>
+	          <li><a href="#">Quit</a></li>
+	        </ul>
+	      </li>
+	
+	      <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Edit <b class="caret"></b></a>
+	        <ul class="dropdown-menu">
+	          <li><a href="#">Undo</a></li>
+	          <li><a href="#">Redo</a></li>
+	           <li class="divider"></li>
+	          <li><a href="#">Copy</a></li>
+	          <li><a href="#">Paste</a></li>
+	        </ul>
+	      </li>
+	
+	      <li class="dropdown">
+	        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Solve <b class="caret"></b></a>
+	        <ul class="dropdown-menu">
+	          <li><a href="#">Solve</a></li>
+	        </ul>
+	      </li>
+	      
+	      <li class="dropdown">
+	        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Highlight <b class="caret"></b></a>
+	        <ul class="dropdown-menu">
+	          @for(highlight <- 0 until controller.getCellsPerRow){<li><a href="#">@highlight</a></li>}
+	        </ul>
+	      </li>
+	      
+	      <li class="dropdown">
+	        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Options <b class="caret"></b></a>
+	        <ul class="dropdown-menu">
+	          <li><a href="#">toggle show Candidates</a></li>
+	          <li><a href="#">Resize to 9*9</a></li>
+	          <li><a href="#">Resize to 4*4</a></li>
+	          <li><a href="#">Resize to 1*1</a></li>
+	        </ul>
+	      </li>
+	    </ul>
+	  </div><!-- /.navbar-collapse -->
+	</nav>
 
     <div class="row">	
-      <div class="col-md-8 align">
-      Highlight:
-<div class="btn-group">  
-  <button type="button" class="btn btn-default">1</button>
-  <button type="button" class="btn btn-default">2</button>
-  <button type="button" class="btn btn-default">3</button>
-  <button type="button" class="btn btn-default">4</button>
-  <button type="button" class="btn btn-default">5</button>
-  <button type="button" class="btn btn-default">6</button>
-  <button type="button" class="btn btn-default">7</button>
-  <button type="button" class="btn btn-default">8</button>
-  <button type="button" class="btn btn-default">9</button>
-</div>
+        <div class="col-md-8 align">
+	        Highlight:
+			<div class="btn-group">  
+			  <button type="button" class="btn btn-default">1</button>
+			  <button type="button" class="btn btn-default">2</button>
+			  <button type="button" class="btn btn-default">3</button>
+			  <button type="button" class="btn btn-default">4</button>
+			  <button type="button" class="btn btn-default">5</button>
+			  <button type="button" class="btn btn-default">6</button>
+			  <button type="button" class="btn btn-default">7</button>
+			  <button type="button" class="btn btn-default">8</button>
+			  <button type="button" class="btn btn-default">9</button>
+			</div>
             <div  @if(controller.getCellsPerRow == 9) {class="outmost-nine"}
                   @if(controller.getCellsPerRow == 4) {class="outmost-four"} 
                   @if(controller.getCellsPerRow == 1) {class="outmost-one"}>
-			<div class="grid">
-				@for(row <- 0 until controller.getCellsPerRow){
-				<div class="gridrow">
-					@for(column <- 0 until controller.getCellsPerRow){
-						<span id="@{
-						var blockname = ""
-						val blocksize = controller.getBlockSize
-						if (row % blocksize == 0) {blockname = "N"}
-						if (row % blocksize == 1) {blockname = ""}
-						if (row % blocksize == 2) {blockname = "S"}
-						if (column % blocksize == 0) {blockname = blockname + "W"}
-						if (column % blocksize == 1) {blockname = blockname + ""}
-						if (column % blocksize == 2) {blockname = blockname + "E"}
-						if (blockname == "") {blockname = "C"}
-						blockname + "block"
-						}">
-						<span class="cellouter" @if(!controller.isShowCandidates(row,column)){onclick="setShowCandidates(@row, @column)"}>
-							<span 
-								@{
-								if (controller.isGiven(row, column)) {
-									"id=given"
-								} else {
-									if (controller.isHighlighted(row, column)) {
-										"id=highlighted"
-									} else {
-										"id=normal"
-									}
-								}
-								}
-								class="cellborder">
-					
-								<div class="cell"><font size="8"> @if(controller.getValue(row,column) != 0) {@controller.getValue(row,column)}</font>
-									@if(controller.getValue(row,column) == 0 && controller.isShowCandidates(row, column)) {
-									
-									<span class="candidate" align="center">
-										@for( i <- 1 to controller.getCellsPerRow) {
-											@if(i % controller.getBlockSize == 1) {
-												<span>
-											}
-													<div class="candidatecell" ondblclick="setValue(@row,@column,@i)">
-														<p class="candidatetext"> 
-															@if(controller.isCandidate(row, column,i)) {@i}  
-									 					</p>
-									 				</div>
-											@if(i % controller.getBlockSize == 0) {
+				<div class="grid">
+					@for(row <- 0 until controller.getCellsPerRow){
+					<div class="gridrow">
+						@for(column <- 0 until controller.getCellsPerRow){
+							<span id="@{
+								var blockname = ""
+				                val blocksize = controller.getBlockSize
+				                if (row % blocksize == 0) {blockname = "N"}
+				                if (row % blocksize == 1) {blockname = ""}
+				                if (row % blocksize == 2) {blockname = "S"}
+				                if (column % blocksize == 0) {blockname = blockname + "W"}
+				                if (column % blocksize == 1) {blockname = blockname + ""}
+				                if (column % blocksize == 2) {blockname = blockname + "E"}
+				                if (blockname == "") {blockname = "C"}
+				                blockname + "block"
+			                }">
+			                <span class="cellouter" @if(!controller.isShowCandidates(row,column)){onclick="setShowCandidates(@row,
+			                @column)"}>
+				                <span
+				                @{
+					                if (controller.isGiven(row, column)) {
+						                "id=given"
+						            } else {
+						                if (controller.isHighlighted(row, column)) {
+						                	"id=highlighted"
+						                } else {
+						                	"id=normal"
+						                }
+					                }
+				                }
+				                class="cellborder">		
+					                <div class="cell"><font size="8"> @if(controller.getValue(row,column) != 0) {@controller.getValue(row,column)}</font>
+					                    @if(controller.getValue(row,column) == 0) {
+					                    	@if(controller.isShowCandidates(row, column)) {
+			
+												<span class="candidate" align="center">
+													@for( i <- 1 to controller.getCellsPerRow) {
+														@if(i % controller.getBlockSize == 1) {
+															<span>
+														}
+																<div class="candidatecell" ondblclick="setValue(@row,@column,@i)">
+			                                                        <p class="candidatetext">
+			                                                            @if(controller.isCandidate(row, column,i)) {@i}
+			                                                        </p>
+			                                                    </div>
+														@if(i % controller.getBlockSize == 0) {
+															</span>
+														}
+													}
 												</span>
-											}
-										}
-									</span>
-								}
-								</div>
-							</span>
+											} else {
+			                      				 &nbsp;
+			                    			}
+			                    		}
+									</div>
+							    </span>
+							</span>	
 						</span>
-					</span>
+						}
+					</div>
 					}
-					
 				</div>
-				}
 			</div>
-		</div>
-		<div class="statusline">
-			 	@controller.getStatus() 
-		</div>
+			<div class="statusline">
+				 	@controller.getStatus() 
+			</div>
 	  </div>
 	   <div class="col-md-1"></div>	
 	   <div class="col-md-3">To see candidates for a cell, click on the cell. To set a value for a cell, double-click on the candidate.</div>
