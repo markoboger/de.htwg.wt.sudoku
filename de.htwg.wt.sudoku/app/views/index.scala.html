@@ -1,106 +1,163 @@
 @(message: String, controller:de.htwg.sudoku.controller.ISudokuController)
 
 @main("Welcome to Play Framework") {
-<script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
-<link rel="stylesheet" href='@routes.Assets.at("stylesheets/Sudoku.css")'/>
+    <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
+    <link rel="stylesheet" href='@routes.Assets.at("stylesheets/Sudoku.css")' />
 
-<script language="JavaScript">
-    function setValue(row,column,value) {
-    window.location = "/command/"+row+column+value;
-        /*
-    "/command-ajax/"+row+column+value;
-    $.ajax({
-        url: "/command-ajax/"+row+column+value,
-        context: document.body
-    }).done(function(resp) {
-        console.log(resp);
-        // $(this).addClass("done");
-    });*/
-    }
+    <script language="JavaScript">
+		function setValue(row,column,value) {
+			window.location = "/command/"+row+column+value;
+		}
+		function setShowCandidates(row,column) {
+			window.location = "/command/"+row+column;
+		}
+	</script>
+	<p>&nbsp;</p><p>&nbsp;</p>
+	<nav class="navbar navbar-default" role="navigation">
+	  <!-- Brand and toggle get grouped for better mobile display -->
+	  <div class="navbar-header">
+	    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	      <span class="sr-only">Toggle navigation</span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	  </div>
 
-    function setShowCandidates(row,column) {
-        console.log("setShowCandidates " + row + ":" + column);
-        // window.location = "/command/"+row+column;
-    }
-</script>
+	  <!-- Collect the nav links, forms, and other content for toggling -->
+	  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	    <ul class="nav navbar-nav">
+	      <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">File <b class="caret"></b></a>
+	        <ul class="dropdown-menu">
+	          <li><a href="/command/n">New</a></li>
+	           <li class="divider"></li>
+	          <li><a href="#">Save</a></li>
+	          <li><a href="#">Load</a></li>
+	          <li class="divider"></li>
+	          <li><a href="#">Quit</a></li>
+	        </ul>
+	      </li>
 
-<div class="well">
-    <div class="align">
-        <h1>@message</h1>
+	      <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Edit <b class="caret"></b></a>
+	        <ul class="dropdown-menu">
+	          <li><a href="/command/z">Undo</a></li>
+	          <li><a href="/command/y">Redo</a></li>
+	           <li class="divider"></li>
+	          <li><a href="/command/c">Copy</a></li>
+	          <li><a href="/command/v">Paste</a></li>
+	        </ul>
+	      </li>
 
-        <div
-        @if(controller.getCellsPerRow == 9) {class="outmost-nine"}
-        @if(controller.getCellsPerRow == 4) {class="outmost-four"}
-        @if(controller.getCellsPerRow == 1) {class="outmost-one"}>
-        <div class="grid">
-            @for(row <- 0 until controller.getCellsPerRow){
-            <div class="gridrow">
-                @for(column <- 0 until controller.getCellsPerRow){
-						<span id="@{
-						var blockname = ""
-                val blocksize = controller.getBlockSize
-                if (row % blocksize == 0) {blockname = "N"}
-                if (row % blocksize == 1) {blockname = ""}
-                if (row % blocksize == 2) {blockname = "S"}
-                if (column % blocksize == 0) {blockname = blockname + "W"}
-                if (column % blocksize == 1) {blockname = blockname + ""}
-                if (column % blocksize == 2) {blockname = blockname + "E"}
-                if (blockname == "") {blockname = "C"}
-                blockname + "block"
-                }">
-                <span class="cellouter" @if(!controller.isShowCandidates(row,column)){onclick="setShowCandidates(@row,
-                @column)"}>
-                <span
-                @{
-                if (controller.isGiven(row, column)) {
-                "id=given"
-                } else {
-                if (controller.isHighlighted(row, column)) {
-                "id=highlighted"
-                } else {
-                "id=normal"
-                }
-                }
-                }
-                class="cellborder">
+	      <li class="dropdown">
+	        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Solve <b class="caret"></b></a>
+	        <ul class="dropdown-menu">
+	          <li><a href="/command/s">Solve</a></li>
+	        </ul>
+	      </li>
 
-                <div class="cell" id="@(column*9+row)"><font size="8"> @if(controller.getValue(row,column) != 0) {@controller.getValue(row,column)}</font>
-                    @if(controller.getValue(row,column) == 0) {
-                    @if(controller.isShowCandidates(row, column)) {
+	      <li class="dropdown">
+	        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Highlight <b class="caret"></b></a>
+	        <ul class="dropdown-menu">
+	        	<li><a href="/command/0">none</a></li>
+	          @for(highlight <- 1 to controller.getCellsPerRow){<li><a href="/command/@highlight">@highlight</a></li>}
+	        </ul>
+	      </li>
 
-									<span class="candidate" align="center">
-										@for( i <- 1 to controller.getCellsPerRow) {
-											@if(i % controller.getBlockSize == 1) {
-												<span>
-											}
-													<div class="candidatecell" onclick="setValue(@row,@column,@i)">
-                                                        <p class="candidatetext">
-                                                            @if(controller.isCandidate(row, column,i)) {@i}
-                                                        </p>
-                                                    </div>
-											@if(i % controller.getBlockSize == 0) {
+	      <li class="dropdown">
+	        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Options <b class="caret"></b></a>
+	        <ul class="dropdown-menu">
+	          <li><a href="#">toggle show Candidates</a></li>
+	          <li><a href="/command/)">Resize to 9*9</a></li>
+	          <li><a href="/command/$">Resize to 4*4</a></li>
+	          <li><a href="/command/!">Resize to 1*1</a></li>
+	        </ul>
+	      </li>
+	    </ul>
+	  </div><!-- /.navbar-collapse -->
+	</nav>
+
+    <div class="row">
+        <div class="col-md-8 align">
+	        Highlight:
+			<div class="btn-group">
+				@for(highlight <- 0 to controller.getCellsPerRow){
+			  		<a href="/command/@highlight"><button type="button" class="btn btn-default">@highlight</button></a>
+			  	}
+			</div>
+            <div  @if(controller.getCellsPerRow == 9) {class="outmost-nine"}
+                  @if(controller.getCellsPerRow == 4) {class="outmost-four"}
+                  @if(controller.getCellsPerRow == 1) {class="outmost-one"}>
+				<div class="grid">
+					@for(row <- 0 until controller.getCellsPerRow){
+					<div class="gridrow">
+						@for(column <- 0 until controller.getCellsPerRow){
+							<span id="@{
+								var blockname = ""
+				                val blocksize = controller.getBlockSize
+				                if (row % blocksize == 0) {blockname = "N"}
+				                if (row % blocksize == 1) {blockname = ""}
+				                if (row % blocksize == 2) {blockname = "S"}
+				                if (column % blocksize == 0) {blockname = blockname + "W"}
+				                if (column % blocksize == 1) {blockname = blockname + ""}
+				                if (column % blocksize == 2) {blockname = blockname + "E"}
+				                if (blockname == "") {blockname = "C"}
+				                blockname + "block"
+			                }">
+			                <span class="cellouter" @if(!controller.isShowCandidates(row,column)){onclick="setShowCandidates(@row,
+			                @column)"}>
+				                <span
+				                @{
+					                if (controller.isGiven(row, column)) {
+						                "id=given"
+						            } else {
+						                if (controller.isHighlighted(row, column)) {
+						                	"id=highlighted"
+						                } else {
+						                	"id=normal"
+						                }
+					                }
+				                }
+				                class="cellborder">
+					                <div class="cell"><font size="8"> @if(controller.getValue(row,column) != 0) {@controller.getValue(row,column)}</font>
+					                    @if(controller.getValue(row,column) == 0) {
+					                    	@if(controller.isShowCandidates(row, column)) {
+
+												<span class="candidate" align="center">
+													@for( i <- 1 to controller.getCellsPerRow) {
+														@if(i % controller.getBlockSize == 1) {
+															<span>
+														}
+																<div class="candidatecell" ondblclick="setValue(@row,@column,@i)">
+			                                                        <p class="candidatetext">
+			                                                            @if(controller.isCandidate(row, column,i)) {@i}
+			                                                        </p>
+			                                                    </div>
+														@if(i % controller.getBlockSize == 0) {
+															</span>
+														}
+													}
 												</span>
-											}
-										}
-									</span>
-                    } else {
-                    &nbsp;
-                    }
-                    }
-                </div>
-                </span>
-                </span>
-                </span>
-                }
-
-            </div>
-            }
-        </div>
+											} else {
+			                      				 &nbsp;
+			                    			}
+			                    		}
+									</div>
+							    </span>
+							</span>
+						</span>
+						}
+					</div>
+					}
+				</div>
+			</div>
+			<div class="statusline">
+				 	@controller.getStatus()
+			</div>
+	  </div>
+	   <div class="col-md-1"></div>
+	   <div class="col-md-3">To see candidates for a cell, click on the cell. To set a value for a cell, double-click on the candidate.</div>
     </div>
-    <div class="statusline">
-        @controller.getStatus()
-    </div>
-</div>
-</div>
 
 }
