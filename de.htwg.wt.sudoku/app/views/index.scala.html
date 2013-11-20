@@ -1,17 +1,26 @@
 @(message: String, controller:de.htwg.sudoku.controller.ISudokuController)
 
 @main("Welcome to Play Framework") {
-    <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
-    <link rel="stylesheet" href='@routes.Assets.at("stylesheets/Sudoku.css")' />
+<script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
+<script type='text/javascript' src='@routes.Assets.at("javascripts/ajax.js")'></script>
+<link rel="stylesheet" href='@routes.Assets.at("stylesheets/Sudoku.css")' />
 
     <script language="JavaScript">
 		function setValue(row,column,value) {
-			window.location = "/command/"+row+column+value;
-		}
+            $.post("/json/" + row + column + value, function (data) {
+                var msg = JSON.parse(data);
+                fill_grid(msg);
+            });
+        }
 		function setShowCandidates(row,column) {
-			window.location = "/command/"+row+column;
-		}
-	</script>
+            $.post("/json/" + row + column, function (data) {
+                var msg = JSON.parse(data);
+                fill_grid(msg);
+            });
+        }
+
+
+    </script>
 	<p>&nbsp;</p><p>&nbsp;</p>
 	<nav class="navbar navbar-default" role="navigation">
 	  <!-- Brand and toggle get grouped for better mobile display -->
@@ -78,6 +87,7 @@
 	  </div><!-- /.navbar-collapse -->
 	</nav>
 
+<div class="game">
     <div class="row">
         <div class="col-md-8 align">
 	        Highlight:
@@ -159,5 +169,6 @@
 	   <div class="col-md-1"></div>
 	   <div class="col-md-3">To see candidates for a cell, click on the cell. To set a value for a cell, double-click on the candidate.</div>
     </div>
+</div>
 
 }

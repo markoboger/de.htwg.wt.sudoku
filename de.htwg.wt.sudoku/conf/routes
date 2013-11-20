@@ -4,6 +4,7 @@
 
 GET     /                           controllers.MainController.index()
 GET 	/command/:commandline		controllers.MainController.commandline(commandline:String)
+POST     /json/:commandline          controllers.MainController.jsonCommand(commandline:String)
 GET     /json                       controllers.MainController.json()
 
 
