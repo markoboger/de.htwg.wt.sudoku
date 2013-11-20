@@ -4,6 +4,7 @@
 
 GET     /                           controllers.MainController.index()
 GET 	/command/:commandline		controllers.MainController.commandline(commandline:String)
+GET     /json                       controllers.MainController.json()
 
 
 # Map static resources from the /public folder to the /assets URL path

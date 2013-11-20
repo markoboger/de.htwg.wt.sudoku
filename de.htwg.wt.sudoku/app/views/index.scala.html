@@ -7,9 +7,20 @@
 <script language="JavaScript">
     function setValue(row,column,value) {
     window.location = "/command/"+row+column+value;
+        /*
+    "/command-ajax/"+row+column+value;
+    $.ajax({
+        url: "/command-ajax/"+row+column+value,
+        context: document.body
+    }).done(function(resp) {
+        console.log(resp);
+        // $(this).addClass("done");
+    });*/
     }
+
     function setShowCandidates(row,column) {
-    window.location = "/command/"+row+column;
+        console.log("setShowCandidates " + row + ":" + column);
+        // window.location = "/command/"+row+column;
     }
 </script>
 
@@ -53,7 +64,7 @@
                 }
                 class="cellborder">
 
-                <div class="cell"><font size="8"> @if(controller.getValue(row,column) != 0) {@controller.getValue(row,column)}</font>
+                <div class="cell" id="@(column*9+row)"><font size="8"> @if(controller.getValue(row,column) != 0) {@controller.getValue(row,column)}</font>
                     @if(controller.getValue(row,column) == 0) {
                     @if(controller.isShowCandidates(row, column)) {
 
@@ -62,7 +73,7 @@
 											@if(i % controller.getBlockSize == 1) {
 												<span>
 											}
-													<div class="candidatecell" ondblclick="setValue(@row,@column,@i)">
+													<div class="candidatecell" onclick="setValue(@row,@column,@i)">
                                                         <p class="candidatetext">
                                                             @if(controller.isCandidate(row, column,i)) {@i}
                                                         </p>
