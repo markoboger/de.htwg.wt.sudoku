@@ -2,7 +2,6 @@ package controllers;
 
 import de.htwg.sudoku.Sudoku;
 import de.htwg.sudoku.controller.ISudokuController;
-import de.htwg.sudoku.model.ICell;
 import de.htwg.sudoku.model.IGrid;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -34,7 +33,7 @@ public class MainController extends Controller {
         Map<String, Object> obj[][] = new HashMap[x][x];
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < x; j++) {
-                obj[i][j] = new HashMap<>();
+                obj[i][j] = new HashMap<String, Object>();
                 obj[i][j].put("cell", grid.getICell(i,j));
                 boolean[] candidates = new boolean[x];
                 for (int ii = 0; ii < x; ii++) {
@@ -44,7 +43,7 @@ public class MainController extends Controller {
             }
         }
 
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("meta", controller.getGrid());
         map.put("grid", obj);
 
