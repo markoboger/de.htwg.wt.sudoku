@@ -30,22 +30,22 @@ public class MainController extends Controller {
     public static Result json() {
         IGrid grid = controller.getGrid();
         int x = grid.getCellsPerEdge();
-        Map<String, Object> obj[][] = new HashMap[x][x];
+        Map<String, Object> mapMatrix[][] = new HashMap[x][x];
         for (int row = 0; row < x; row++) {
             for (int col= 0; col < x; col++) {
-                obj[row][col] = new HashMap<String, Object>();
-                obj[row][col].put("cell", grid.getICell(row,col));
+                mapMatrix[row][col] = new HashMap<String, Object>();
+                mapMatrix[row][col].put("cell", grid.getICell(row,col));
                 boolean[] candidates = new boolean[x];
                 for (int candidate = 0; candidate < x; candidate++) {
                     candidates[candidate] = controller.isCandidate(row, col, candidate + 1);
                 }
-                obj[row][col].put("candidates", candidates);
+                mapMatrix[row][col].put("candidates", candidates);
             }
         }
 
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("meta", controller.getGrid());
-        map.put("grid", obj);
+        map.put("grid", mapMatrix);
 
         return ok(Json.stringify(Json.toJson(map)));
     }
