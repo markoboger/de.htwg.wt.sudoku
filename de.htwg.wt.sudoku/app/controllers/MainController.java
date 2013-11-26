@@ -29,14 +29,15 @@ public class MainController extends Controller {
 
     public static Result json() {
         IGrid grid = controller.getGrid();
-        int x = grid.getCellsPerEdge();
-        Map<String, Object> mapMatrix[][] = new HashMap[x][x];
-        for (int row = 0; row < x; row++) {
-            for (int col= 0; col < x; col++) {
+        int size = grid.getCellsPerEdge();
+        @SuppressWarnings("unchecked")
+		Map<String, Object> mapMatrix[][] = new HashMap[size][size];
+        for (int row = 0; row < size; row++) {
+            for (int col= 0; col < size; col++) {
                 mapMatrix[row][col] = new HashMap<String, Object>();
                 mapMatrix[row][col].put("cell", grid.getICell(row,col));
-                boolean[] candidates = new boolean[x];
-                for (int candidate = 0; candidate < x; candidate++) {
+                boolean[] candidates = new boolean[size];
+                for (int candidate = 0; candidate < size; candidate++) {
                     candidates[candidate] = controller.isCandidate(row, col, candidate + 1);
                 }
                 mapMatrix[row][col].put("candidates", candidates);
