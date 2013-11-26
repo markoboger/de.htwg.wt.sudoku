@@ -31,15 +31,15 @@ public class MainController extends Controller {
         IGrid grid = controller.getGrid();
         int x = grid.getCellsPerEdge();
         Map<String, Object> obj[][] = new HashMap[x][x];
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < x; j++) {
-                obj[i][j] = new HashMap<String, Object>();
-                obj[i][j].put("cell", grid.getICell(i,j));
+        for (int row = 0; row < x; row++) {
+            for (int col= 0; col < x; col++) {
+                obj[row][col] = new HashMap<String, Object>();
+                obj[row][col].put("cell", grid.getICell(row,col));
                 boolean[] candidates = new boolean[x];
-                for (int ii = 0; ii < x; ii++) {
-                    candidates[ii] = controller.isCandidate(i, j, ii + 1);
+                for (int candidate = 0; candidate < x; candidate++) {
+                    candidates[candidate] = controller.isCandidate(row, col, candidate + 1);
                 }
-                obj[i][j].put("candidates", candidates);
+                obj[row][col].put("candidates", candidates);
             }
         }
 
