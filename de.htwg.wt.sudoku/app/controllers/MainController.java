@@ -1,14 +1,11 @@
 package controllers;
 
-import de.htwg.sudoku.Sudoku;
-import de.htwg.sudoku.controller.ISudokuController;
-import de.htwg.sudoku.model.IGrid;
-import play.libs.Json;
+import models.GridObserver;
 import play.mvc.Controller;
 import play.mvc.Result;
-
-import java.util.HashMap;
-import java.util.Map;
+import play.mvc.WebSocket;
+import de.htwg.sudoku.Sudoku;
+import de.htwg.sudoku.controller.ISudokuController;
 
 public class MainController extends Controller {
 	static ISudokuController controller = Sudoku.getInstance().getController();
@@ -24,31 +21,17 @@ public class MainController extends Controller {
 
     public static Result jsonCommand(String command) {
         Sudoku.getInstance().getTUI().processInputLine(command);
-        return json();
+        return ok(controller.getGrid().toJson());
     }
-
-    public static Result json() {
-        IGrid grid = controller.getGrid();
-        int size = grid.getCellsPerEdge();
-        @SuppressWarnings("unchecked")
-		Map<String, Object> mapMatrix[][] = new HashMap[size][size];
-        for (int row = 0; row < size; row++) {
-            for (int col= 0; col < size; col++) {
-                mapMatrix[row][col] = new HashMap<String, Object>();
-                mapMatrix[row][col].put("cell", grid.getICell(row,col));
-                boolean[] candidates = new boolean[size];
-                for (int candidate = 0; candidate < size; candidate++) {
-                    candidates[candidate] = controller.isCandidate(row, col, candidate + 1);
-                }
-                mapMatrix[row][col].put("candidates", candidates);
+    
+    public static WebSocket<String> connectWebSocket() {
+        return new WebSocket<String>() {
+       
+            public void onReady(WebSocket.In<String> in, WebSocket.Out<String> out) {
+            	new GridObserver(controller,out);
             }
-        }
 
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("meta", controller.getGrid());
-        map.put("grid", mapMatrix);
-
-        return ok(Json.stringify(Json.toJson(map)));
+        };
     }
 
 }
