@@ -11,33 +11,36 @@ $(function() {
     })
 })
 
- $(function() {  
-  
-      connect();  
-  
-      function connect(){       
-          var socket = new WebSocket("ws://localhost:9000/socket/");  
+$(function() {  
 
-          message('Socket Status: '+socket.readyState + ' (ready)');  
+	connect();  
 
-          socket.onopen = function(){  message('Socket Status: '+socket.readyState+' (open)');  }  
+	function connect(){       
+		var socket = new WebSocket("ws://localhost:9000/socket");
 
-          socket.onmessage = function(msg){ fill_grid(msg);  }  
+		message('Socket Status: '+socket.readyState + ' (ready)');  
 
-          socket.onclose = function(){ message('Socket Status: '+socket.readyState+' (Closed)');  }            
-  
-          function send(){  
-        	  var grid = "";
-                  socket.send(grid);  
-                  message('Sent grid '); 
-          }  
-  
-          function message(msg){  
-            $('#wsLog').append(msg);  
-          }  
-  
-  
-      }//End connect  
-  
-  
+		socket.onopen = function(){  message('Socket Status: '+socket.readyState+' (open)');  }  ;
+
+		socket.onmessage = function(msg){
+			var msg = JSON.parse(msg.data);
+			fill_grid(msg); 
+		} ;
+
+		socket.onclose = function(){ message('Socket Status: '+socket.readyState+' (Closed)');  }  ;          
+
+		function send(){  
+			var grid = "";
+			socket.send(grid);  
+			message('Sent grid '); 
+		}  
+
+		function message(msg){  
+			$('#wsLog').append('<p>' + msg +'</p>');  
+		}  
+
+
+	}//End connect  
+
+
 });  
