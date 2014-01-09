@@ -5,6 +5,8 @@ import play.data.*;
 import static play.data.Form.*;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
+import play.mvc.Http.Context;
 import play.mvc.WebSocket;
 import de.htwg.sudoku.Sudoku;
 import de.htwg.sudoku.controller.ISudokuController;
@@ -40,17 +42,22 @@ public class MainController extends Controller {
     }
     
     public static Result login() {
-        return ok( views.html.login.render(Form.form(Login.class)));
+        return ok( views.html.login.render(Form.form(User.class)));
+    }
+    
+    public static Result logout() {
+    	session().clear();
+    	return redirect(routes.MainController.index());
     }
     
     public static Result authenticate() {
-        Form<Person> loginform = DynamicForm.form(Person.class).bindFromRequest();
+        Form<User> loginform = DynamicForm.form(User.class).bindFromRequest();
         
         User user = User.authenticate(loginform.get());
 
-        if (loginForm.hasErrors() || account == null) {
+        if (loginform.hasErrors() || user == null) {
 
-            return badRequest(views.html.login.render(loginForm));
+            return badRequest(views.html.login.render(loginform));
         } else {
             session().clear();
             session("email", user.email);
@@ -68,14 +75,16 @@ public class MainController extends Controller {
         public String email;
         public String password;
         
+        public User() {}
+        
         private User(final String email, final String password) {
             this.email = email;
             this.password = password;
         }
 
-     	public static User authenticate(String email, String password){
-     	    if (email.equals(defaultUser) && password.equals(defaultPasswort)) {
-     	        return new User(email, password);
+     	public static User authenticate(User user){
+     	    if (user.email.equals(defaultUser) && user.password.equals(defaultPasswort)) {
+     	        return new User(user.email, user.password);
      	    }
      	    
     	    return null;
@@ -91,7 +100,7 @@ public class MainController extends Controller {
 
         @Override
         public Result onUnauthorized(Context ctx) {
-            return redirect(routes.Application.login());
+            return redirect(routes.MainController.login());
         }
     }
 
