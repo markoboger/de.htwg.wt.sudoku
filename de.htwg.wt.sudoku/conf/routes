@@ -3,6 +3,8 @@
 # ~~~~
 
 GET     /                           controllers.MainController.index()
+GET 	/login						controllers.MainController.login()
+POST    /login                      controllers.MainController.authenticate()
 GET 	/command/:commandline		controllers.MainController.commandline(commandline:String)
 POST     /json/:commandline          controllers.MainController.jsonCommand(commandline:String)
 GET		/socket						controllers.MainController.connectWebSocket()

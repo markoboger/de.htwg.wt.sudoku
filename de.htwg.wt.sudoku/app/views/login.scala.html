@@ -1,0 +1,34 @@
+@(form: play.data.Form[MainController.Login])
+<html>
+    <head>
+        <title>Sudoku</title>
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/login.css")">
+    </head>
+    <body>
+        <header>
+            <a href="@routes.MainController.index" id = "logo"><span>HTWG Sudoku </span></a>
+        </header>
+        @helper.form(routes.MainController.authenticate) {
+   <h1>Sign in</h1>
+   
+   @if(form.hasGlobalErrors) {
+    <p class="error">
+        @form.globalError.message
+    </p>
+}
+
+   <p>
+       <input type="email" name="email" placeholder="Email" value="@form("email").value">
+   </p>
+   <p>
+       <input type="password" name="password" placeholder="Password">
+   </p>
+   <p>
+       <button type="submit">Login</button>
+   </p>
+}
+    
+    </body>
+</html>
+
