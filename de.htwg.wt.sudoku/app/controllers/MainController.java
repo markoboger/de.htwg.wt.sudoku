@@ -12,7 +12,10 @@ import de.htwg.sudoku.controller.ISudokuController;
 public class MainController extends Controller {
 	static ISudokuController controller = Sudoku.getInstance().getController();
 
+    @play.mvc.Security.Authenticated(Secured.class)
     public static Result index() {
+        String email = session("email");
+        System.out.println(email);
         return ok(views.html.index.render("HTWG Sudoku", controller));
     }
 
@@ -41,34 +44,55 @@ public class MainController extends Controller {
     }
     
     public static Result authenticate() {
-        Form<Login> loginForm = Form.form(Login.class).bindFromRequest();
-        if (loginForm.hasErrors()) {
+        Form<Person> loginform = DynamicForm.form(Person.class).bindFromRequest();
+        
+        User user = User.authenticate(loginform.get());
+
+        if (loginForm.hasErrors() || account == null) {
+
             return badRequest(views.html.login.render(loginForm));
         } else {
             session().clear();
-            session("email", loginForm.get().email);
+            session("email", user.email);
             return redirect(
                 routes.MainController.index()
             );
         } 
     }
     
-    public String validate(String email, String password) {
-        if (new User().authenticate(email, password) == null) {
-          return "Invalid user or password";
-        }
-        return null;
-    }
-    
-    public static class Login {
+    public static class User {
+        
+        private final static String defaultUser = "test@123.de";
+        private final static String defaultPasswort = "nsa";
 
         public String email;
         public String password;
+        
+        private User(final String email, final String password) {
+            this.email = email;
+            this.password = password;
+        }
 
-    }
-    
-    public class User {
-    	public String authenticate( String email, String password){return null;}
+     	public static User authenticate(String email, String password){
+     	    if (email.equals(defaultUser) && password.equals(defaultPasswort)) {
+     	        return new User(email, password);
+     	    }
+     	    
+    	    return null;
+    	}
+   }
+   
+    public static class Secured extends Security.Authenticator {
+
+        @Override
+        public String getUsername(Context ctx) {
+            return ctx.session().get("email");
+        }
+
+        @Override
+        public Result onUnauthorized(Context ctx) {
+            return redirect(routes.Application.login());
+        }
     }
 
 }
