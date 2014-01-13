@@ -11,7 +11,7 @@
         </header>
         @helper.form(routes.MainController.authenticate) {
    <h1>Sign in</h1>
-   
+
    @if(form.hasGlobalErrors) {
     <p class="error">
         @form.globalError.message
@@ -28,7 +28,8 @@
        <button type="submit">Login</button>
    </p>
 }
-    
+        <a href="@routes.MainController.auth">Google Login</a> <br>
+
     </body>
 </html>
 
