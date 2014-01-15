@@ -1,25 +1,27 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import de.htwg.sudoku.Sudoku;
+import de.htwg.sudoku.controller.ISudokuController;
 import models.GridObserver;
-import play.data.*;
-import static play.data.Form.*;
-
+import play.data.DynamicForm;
+import play.data.Form;
 import play.libs.F;
 import play.libs.Json;
 import play.libs.OpenID;
 import play.mvc.Controller;
+import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
-import play.mvc.Http.Context;
 import play.mvc.WebSocket;
-import de.htwg.sudoku.Sudoku;
-import de.htwg.sudoku.controller.ISudokuController;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MainController extends Controller {
 	static ISudokuController controller = Sudoku.getInstance().getController();
+
+    private static Map<String, String> userDB = new HashMap<>();
 
     @play.mvc.Security.Authenticated(Secured.class)
     public static Result index() {
@@ -52,6 +54,10 @@ public class MainController extends Controller {
         return ok( views.html.login.render(Form.form(User.class)));
     }
 
+    public static Result signupForm() {
+        return ok(views.html.signup.render(Form.form(User.class)));
+    }
+
     public static Result logout() {
     	session().clear();
     	return redirect(routes.MainController.index());
@@ -63,26 +69,49 @@ public class MainController extends Controller {
         User user = User.authenticate(loginform.get());
 
         if (loginform.hasErrors() || user == null) {
+            ObjectNode response = Json.newObject();
+            response.put("success", false);
+            response.put("errors", loginform.errorsAsJson());
+            if (user == null) {
+                flash("errors", "Wrong username or password");
+            }
 
             return badRequest(views.html.login.render(loginform));
         } else {
             session().clear();
             session("email", user.email);
-            return redirect(
-                routes.MainController.index()
-            );
+            return redirect(routes.MainController.index());
+        }
+    }
+
+    public Result signup() {
+        Form<User> loginform = DynamicForm.form(User.class).bindFromRequest();
+
+        ObjectNode response = Json.newObject();
+        User account = loginform.get();
+        boolean exists = userDB.containsKey(account.email);
+
+        if (loginform.hasErrors() || exists) {
+            response.put("success", false);
+            response.put("errors", loginform.errorsAsJson());
+            if (exists) {
+                flash("errors", "Account already exists");
+            }
+
+            return badRequest(views.html.signup.render(loginform));
+        } else {
+            userDB.put(loginform.get().email, loginform.get().password);
+            session().clear();
+            session("email", loginform.get().email);
+            return redirect(routes.MainController.index());
         }
     }
 
     public static class User {
-
-        private final static String defaultUser = "test@123.de";
-        private final static String defaultPasswort = "nsa";
-
         public String email;
         public String password;
 
-        public User() {}
+        public User() { }
 
         private User(final String email, final String password) {
             this.email = email;
@@ -90,7 +119,7 @@ public class MainController extends Controller {
         }
 
      	public static User authenticate(User user){
-     	    if (user.email.equals(defaultUser) && user.password.equals(defaultPasswort)) {
+     	    if (user != null && userDB.containsKey(user.email) && userDB.get(user.email).equals(user.password)) {
      	        return new User(user.email, user.password);
      	    }
 
