@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, email:String)(content: Html)
 
 <!DOCTYPE html>
 <html>
@@ -38,7 +38,7 @@
             <li class="active"><a href="#">Play Sudoku</a></li>
             <li><a href="#about">About</a></li>
               <li><a href="#contact">Contact</a></li>
-              <li><a href="/logout">Logout</a></li>
+              <li><a href="/logout">Logout (@email)</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

@@ -27,12 +27,12 @@ public class MainController extends Controller {
     public static Result index() {
         String email = session("email");
         System.out.println(email);
-        return ok(views.html.index.render("HTWG Sudoku", controller));
+        return ok(views.html.index.render("HTWG Sudoku", controller, email));
     }
 
     public static Result commandline(String command) {
     	Sudoku.getInstance().getTUI().processInputLine(command);
-        return ok(views.html.index.render("Got your command "+ command, controller));
+        return ok(views.html.index.render("Got your command "+ command, controller, ""));
     }
 
     public static Result jsonCommand(String command) {
