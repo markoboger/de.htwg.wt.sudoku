@@ -25,7 +25,7 @@ public class MainControllerTest {
     public void indexTemplateShouldContainTheStringThatIsPassedToIt() {
         running(fakeApplication(), new Runnable() {
             public void run() {
-                Content html = views.html.index.render("Your new application is ready.",null);
+                Content html = views.html.index.render("Your new application is ready.",null, "");
                 assertThat(contentType(html)).isEqualTo("text/html");
                 assertThat(contentAsString(html)).contains("Your new application is ready.");
             }
