@@ -3,13 +3,17 @@
 # ~~~~
 
 GET     /                           controllers.MainController.index()
-GET 	/login						controllers.MainController.login()
 GET 	/logout						controllers.MainController.logout()
-POST    /login                      controllers.MainController.authenticate()
+GET         /login        controllers.MainController.login()
+POST        /login        controllers.MainController.authenticate()
+GET         /signup        controllers.MainController.signupForm()
+POST        /signup        @controllers.MainController.signup()
 GET 	/command/:commandline		controllers.MainController.commandline(commandline:String)
 POST     /json/:commandline          controllers.MainController.jsonCommand(commandline:String)
 GET		/socket						controllers.MainController.connectWebSocket()
 
+GET        /openID/auth           controllers.MainController.auth()
+GET        /openID/verify        @controllers.MainController.verify()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

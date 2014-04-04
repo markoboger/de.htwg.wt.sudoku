@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, email:String)(content: Html)
 
 <!DOCTYPE html>
 <html>
@@ -7,7 +7,7 @@
     <link rel='shortcut icon' type='image/png' href='@routes.Assets.at("images/favicon.png")'>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
     <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-    
+
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
 
@@ -16,7 +16,11 @@
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
-	
+	<style type="text/css">
+    body {
+        padding-top : 70px;
+    }
+	</style>
 </head>
 <body>
    <div class="navbar navbar-inverse navbar-fixed-top">
@@ -33,7 +37,8 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Play Sudoku</a></li>
             <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+              <li><a href="#contact">Contact</a></li>
+              <li><a href="/logout">Logout (@email)</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
