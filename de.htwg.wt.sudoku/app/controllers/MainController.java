@@ -20,18 +20,22 @@ import java.util.Map;
 
 public class MainController extends Controller {
 	static ISudokuController controller = Sudoku.getInstance().getController();
+	
+	private static Map<String, ISudokuController> controllers = new HashMap<>();
 
     private static Map<String, String> userDB = new HashMap<>();
 
     @play.mvc.Security.Authenticated(Secured.class)
     public static Result index() {
         String email = session("email");
+        controllers.put(email, Sudoku.getInstance().createController());
         System.out.println(email);
         return ok(views.html.index.render("HTWG Sudoku", controller, email));
     }
 
     public static Result commandline(String command) {
-    	Sudoku.getInstance().getTUI().processInputLine(command);
+    	String email = session("email");
+        controllers.get(email).processInputLine(command);
         return ok(views.html.index.render("Got your command "+ command, controller, ""));
     }
 
