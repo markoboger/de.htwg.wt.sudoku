@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainController extends Controller {
-	static ISudokuController controller = Sudoku.getInstance().getController();
 	
 	private static Map<String, ISudokuController> controllers = new HashMap<>();
 
@@ -28,26 +27,31 @@ public class MainController extends Controller {
     @play.mvc.Security.Authenticated(Secured.class)
     public static Result index() {
         String email = session("email");
-        controllers.put(email, Sudoku.getInstance().createController());
-        System.out.println(email);
+        ISudokuController controller = controllers.get(email);
         return ok(views.html.index.render("HTWG Sudoku", controller, email));
     }
 
     public static Result commandline(String command) {
     	String email = session("email");
-        controllers.get(email).processInputLine(command);
+    	ISudokuController controller = controllers.get(email);
+    	controller.processInputLine(command);
         return ok(views.html.index.render("Got your command "+ command, controller, ""));
     }
 
     public static Result jsonCommand(String command) {
-        Sudoku.getInstance().getTUI().processInputLine(command);
+        String email = session("email");
+        ISudokuController controller = controllers.get(email);
+        controller.processInputLine(command);
         return ok(controller.getGrid().toJson());
     }
 
     public static WebSocket<String> connectWebSocket() {
+       
         return new WebSocket<String>() {
 
             public void onReady(WebSocket.In<String> in, WebSocket.Out<String> out) {
+                String email = session("email");
+                ISudokuController controller = controllers.get(email);
             	new GridObserver(controller,out);
             }
 
@@ -63,6 +67,8 @@ public class MainController extends Controller {
     }
 
     public static Result logout() {
+        String email = session("email");
+        controllers.remove(email);
     	session().clear();
     	return redirect(routes.MainController.index());
     }
@@ -84,6 +90,9 @@ public class MainController extends Controller {
         } else {
             session().clear();
             session("email", user.email);
+            String email = session("email");
+            ISudokuController controller=Sudoku.getInstance().createController();
+            controllers.put(email,controller );
             return redirect(routes.MainController.index());
         }
     }
